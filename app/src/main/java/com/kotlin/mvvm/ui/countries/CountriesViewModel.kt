@@ -1,11 +1,13 @@
 package com.kotlin.mvvm.ui.countries
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kotlin.mvvm.repository.model.countries.Country
 import com.kotlin.mvvm.repository.repo.countries.CountriesRepository
+import com.kotlin.mvvm.repository.repo.posts.PostsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +19,7 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class CountriesViewModel @Inject constructor(val countriesRepository: CountriesRepository) :
+class CountriesViewModel @Inject constructor(private val countriesRepository: CountriesRepository) :
     ViewModel() {
 
     /**
@@ -29,6 +31,7 @@ class CountriesViewModel @Inject constructor(val countriesRepository: CountriesR
         viewModelScope.launch {
             val result = countriesRepository.getCountries()
             countries.postValue(result)
+
         }
         return countries
     }

@@ -1,12 +1,14 @@
 package com.kotlin.mvvm.ui.news
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kotlin.mvvm.R
 import com.kotlin.mvvm.databinding.ActivityNewsArticlesBinding
 import com.kotlin.mvvm.ui.BaseActivity
+import com.kotlin.mvvm.ui.posts.PostsViewModel
 import com.kotlin.mvvm.utils.ToastUtil
 import com.kotlin.mvvm.utils.extensions.load
 import com.kotlin.mvvm.utils.widget.CompleteRecyclerView
@@ -38,6 +40,8 @@ class NewsActivity : BaseActivity() {
      * @Inject annotated fields will be provided by Dagger
      */
     private val newsArticleViewModel: NewsViewModel by viewModels()
+
+
     private lateinit var binding: ActivityNewsArticlesBinding
 
     /**
@@ -83,5 +87,6 @@ class NewsActivity : BaseActivity() {
                 }
             }
         })
+
     }
 }

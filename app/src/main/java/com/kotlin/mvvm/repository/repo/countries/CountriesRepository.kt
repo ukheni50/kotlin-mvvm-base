@@ -1,6 +1,10 @@
 package com.kotlin.mvvm.repository.repo.countries
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
+import android.util.Log
+import com.kotlin.mvvm.repository.api.Postservice
 import com.kotlin.mvvm.repository.db.countries.CountriesDao
 import com.kotlin.mvvm.repository.model.countries.Country
 import com.kotlin.mvvm.utils.CountryNameMapping
@@ -24,7 +28,7 @@ import javax.inject.Singleton
 @Singleton
 class CountriesRepository @Inject constructor(
     private val countriesDao: CountriesDao,
-    @ApplicationContext val context: Context
+    @ApplicationContext val context: Context, private val service: Postservice
 ) {
 
     /**
@@ -46,6 +50,15 @@ class CountriesRepository @Inject constructor(
             }
             countriesDao.deleteAllCountries()
             countriesDao.insertCountries(listOfCountries)
+            val response = service.getPostsSource(1)
+            Log.d("post", response.toString())
+            // Storing data into SharedPreferences
+            val sharedPreferences: SharedPreferences =
+                context.getSharedPreferences("MySharedPref", MODE_PRIVATE)
+            val myEdit = sharedPreferences.edit()
+            myEdit.putString("response", response.toString())
+            myEdit.apply()
+
         }
 
         return countriesDao.getCountries()

@@ -10,11 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.kotlin.mvvm.R
+import com.kotlin.mvvm.databinding.FragmentCountryListBinding
 import com.kotlin.mvvm.repository.model.countries.Country
 import com.kotlin.mvvm.ui.news.NewsActivity
+import com.kotlin.mvvm.ui.posts.Posts
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_country_list.view.*
 
 
 /**
@@ -45,7 +46,7 @@ class CountriesFragment : Fragment() {
     private lateinit var countriesAdapter: CountriesAdapter
     private var listOfCountries = ArrayList<Country>()
     private lateinit var thisView: View
-
+    private lateinit var binding: FragmentCountryListBinding
 
     /**
      *
@@ -71,6 +72,7 @@ class CountriesFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
     }
 
     /**
@@ -81,28 +83,32 @@ class CountriesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        thisView = inflater.inflate(R.layout.fragment_country_list, container, false)
+        binding = FragmentCountryListBinding.inflate(inflater, container, false)
+
+//        thisView = inflater.inflate(R.layout.fragment_country_list, container, false)
+
 
         load()
         observeCountries()
-
-        return thisView
+        return binding.root
+//        return thisView
     }
 
     /**
      *
      */
     private fun load() {
-        thisView.findViewById<RecyclerView>(R.id.recyclerview_countries).layoutManager =
+        binding.recyclerviewCountries.layoutManager =
             if (columnCount <= 1) LinearLayoutManager(context) else GridLayoutManager(
                 context,
                 columnCount
             )
         countriesAdapter = CountriesAdapter(listOfCountries)
-        thisView.findViewById<RecyclerView>(R.id.recyclerview_countries).adapter = countriesAdapter
+        binding.recyclerviewCountries.adapter = countriesAdapter
 
         countriesAdapter.onCountryClicked = { country ->
             val intent = Intent(context, NewsActivity::class.java)
+//            val intent = Intent(context, Posts::class.java)
             intent.putExtra(NewsActivity.KEY_COUNTRY_SHORT_KEY, country.countryKey)
             startActivity(intent)
         }

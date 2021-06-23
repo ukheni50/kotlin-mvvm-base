@@ -1,10 +1,12 @@
 package com.kotlin.mvvm.repository.api
 
 import androidx.lifecycle.LiveData
+import com.kotlin.mvvm.BuildConfig
 import com.kotlin.mvvm.repository.api.network.Resource
 import com.kotlin.mvvm.repository.model.news.NewsSource
-import retrofit2.http.GET
-import retrofit2.http.QueryMap
+import com.kotlin.mvvm.repository.model.posts.PostResponse
+import retrofit2.Response
+import retrofit2.http.*
 
 /**
  * Created by Waheed on 04,November,2019
@@ -18,5 +20,7 @@ interface ApiServices {
      */
     @GET("top-headlines")
     fun getNewsSource(@QueryMap options: Map<String, String>): LiveData<Resource<NewsSource>>
+
+
 
 }

@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.kotlin.mvvm.BuildConfig
 import com.kotlin.mvvm.repository.api.ApiServices
 import com.kotlin.mvvm.repository.api.network.LiveDataCallAdapterFactoryForRetrofit
+import com.kotlin.mvvm.repository.api.Postservice
 import com.kotlin.mvvm.repository.db.AppDatabase
 import com.kotlin.mvvm.repository.db.countries.CountriesDao
 import com.kotlin.mvvm.repository.db.news.NewsDao
@@ -13,9 +14,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 /**
  * Created by Waheed on 04,November,2019
@@ -28,15 +32,37 @@ object AppModule {
     /**
      * Provides ApiServices client for Retrofit
      */
+
     @Singleton
     @Provides
     fun provideNewsService(): ApiServices {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactoryForRetrofit())
+            .client(client)
             .build()
             .create(ApiServices::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providePostsService(): Postservice {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.DUMMY_DATA_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(LiveDataCallAdapterFactoryForRetrofit())
+            .client(client)
+            .build()
+            .create(Postservice::class.java)
     }
 
 

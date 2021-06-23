@@ -1,5 +1,6 @@
 package com.kotlin.mvvm.ui.news
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.kotlin.mvvm.R
 import com.kotlin.mvvm.databinding.RowNewsArticleBinding
 import com.kotlin.mvvm.repository.model.news.News
+import com.kotlin.mvvm.ui.posts.Posts
+import com.kotlin.mvvm.utils.intentOpenWebsite
 
 /**
  * Created by Waheed on 04,November,2019
@@ -74,6 +77,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsHolder>() {
 
             itemView.setOnClickListener {
                 onNewsClicked?.invoke(newsArticle)
+                context.startActivity(Intent(context, Posts::class.java))
             }
 
         }
